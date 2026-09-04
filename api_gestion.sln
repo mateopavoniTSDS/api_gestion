@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api_gestion", "api_gestion\api_gestion.csproj", "{64B471A4-BABE-499B-A6B9-2FAB8011915C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "entity_library", "entity_library\entity_library.csproj", "{1885DEC6-D15F-42C0-96D4-81C0182CCE59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dao_library", "dao_library\dao_library.csproj", "{4A726CC6-90C1-47BF-B036-A0E07DFAAC6F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64B471A4-BABE-499B-A6B9-2FAB8011915C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64B471A4-BABE-499B-A6B9-2FAB8011915C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64B471A4-BABE-499B-A6B9-2FAB8011915C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64B471A4-BABE-499B-A6B9-2FAB8011915C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1885DEC6-D15F-42C0-96D4-81C0182CCE59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1885DEC6-D15F-42C0-96D4-81C0182CCE59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1885DEC6-D15F-42C0-96D4-81C0182CCE59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1885DEC6-D15F-42C0-96D4-81C0182CCE59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A726CC6-90C1-47BF-B036-A0E07DFAAC6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A726CC6-90C1-47BF-B036-A0E07DFAAC6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A726CC6-90C1-47BF-B036-A0E07DFAAC6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A726CC6-90C1-47BF-B036-A0E07DFAAC6F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
