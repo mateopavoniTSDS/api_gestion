@@ -1,19 +1,23 @@
 namespace api_gestion.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using entity_library;
 using dao_library;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class TeamController : ControllerBase
 {
     private readonly ILogger<TeamController> _logger;
     private readonly TeamDAO _teamDAO;
+    private readonly TrainerDAO _trainerDAO;
 
-    public TeamController(ILogger<TeamController> logger, TeamDAO teamDAO)
+    public TeamController(ILogger<TeamController> logger, TeamDAO teamDAO, TrainerDAO trainerDAO)
     {
         _logger = logger;
         _teamDAO = teamDAO;
+        _trainerDAO = trainerDAO;
     }
 
     [HttpGet]
@@ -37,6 +41,11 @@ public class TeamController : ControllerBase
     [HttpPost]
     public ActionResult Create(Team team)
     {
+        if (_trainerDAO.GetTrainerById(team.TrainerId) == null)
+        {
+            return BadRequest("El entrenador no existe");
+        }
+
         var created = _teamDAO.CreateTeam(team);
         return Created($"/team/{created.Id}", created);
     }
@@ -44,6 +53,11 @@ public class TeamController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult Update(long id, Team team)
     {
+        if (_trainerDAO.GetTrainerById(team.TrainerId) == null)
+        {
+            return BadRequest("El entrenador no existe");
+        }
+
         team.Id = id;
         var updated = _teamDAO.UpdateTeam(team);
         if (!updated)

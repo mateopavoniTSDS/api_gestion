@@ -1,8 +1,10 @@
 namespace api_gestion.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using entity_library;
 using dao_library;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class StudentController : ControllerBase

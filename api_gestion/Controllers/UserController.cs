@@ -1,4 +1,5 @@
 namespace api_gestion.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using entity_library;
 using dao_library;
@@ -20,12 +21,14 @@ public class UserController : ControllerBase
         _jwtService = jwtService;
     }
 
+    [Authorize]
     [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok(_userDAO.GetAllUsers());
+        return Ok(_userDAO.GetAllUsers().Select(ToResponse));
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public IActionResult Get(long id)
     {
@@ -35,41 +38,66 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        return Ok(user);
+        return Ok(ToResponse(user));
     }
 
     [HttpPost]
-    public ActionResult Create(User user)
+    public ActionResult Create(UserCreateDTO dto)
     {
-        if (_userDAO.GetAllUsers().Any(u => u.Email.ToLower() == user.Email.ToLower()))
+        var users = _userDAO.GetAllUsers();
+        if (users.Any(u => u.Email.ToLower() == dto.Email.ToLower()))
         {
             return BadRequest("Ya existe un usuario con ese email");
         }
+        if (users.Any(u => u.Dni == dto.Dni))
+        {
+            return BadRequest("Ya existe un usuario con ese DNI");
+        }
 
-        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        var user = new User
+        {
+            Name = dto.Name,
+            Dni = dto.Dni,
+            Email = dto.Email,
+            Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+            RoleType = dto.RoleType
+        };
         var created = _userDAO.CreateUser(user);
-        return Created($"/user/{created.Id}", created);
+        return Created($"/user/{created.Id}", ToResponse(created));
     }
 
+    [Authorize]
     [HttpPut("{id}")]
-    public ActionResult Update(long id, User user)
+    public ActionResult Update(long id, UserCreateDTO dto)
     {
-        if (_userDAO.GetAllUsers().Any(u => u.Id != id && u.Email.ToLower() == user.Email.ToLower()))
+        var users = _userDAO.GetAllUsers();
+        if (users.Any(u => u.Id != id && u.Email.ToLower() == dto.Email.ToLower()))
         {
             return BadRequest("Ya existe un usuario con ese email");
         }
+        if (users.Any(u => u.Id != id && u.Dni == dto.Dni))
+        {
+            return BadRequest("Ya existe un usuario con ese DNI");
+        }
 
-        user.Id = id;
-        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-        var updated = _userDAO.UpdateUser(user);
-        if (!updated)
+        var user = new User
+        {
+            Id = id,
+            Name = dto.Name,
+            Dni = dto.Dni,
+            Email = dto.Email,
+            Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+            RoleType = dto.RoleType
+        };
+        if (!_userDAO.UpdateUser(user))
         {
             return NotFound();
         }
 
-        return Ok(user);
+        return Ok(ToResponse(user));
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public IActionResult Delete(long id)
     {
@@ -95,5 +123,17 @@ public class UserController : ControllerBase
 
         var token = _jwtService.GenerateToken(user);
         return Ok(new { token });
+    }
+
+    private static UserResponseDTO ToResponse(User user)
+    {
+        return new UserResponseDTO
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Dni = user.Dni,
+            Email = user.Email,
+            RoleType = user.RoleType
+        };
     }
 }

@@ -1,35 +1,35 @@
 # api_gestion (backend)
 
-API en ASP.NET Core + PostgreSQL. Login con hash BCrypt y token JWT.
+API en ASP.NET Core (.NET 9) con MySQL. Login con BCrypt y JWT.
 
 ## Correr
 
-```bash
-cd api_gestion
-dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Database=api_gestion;Username=postgres;Password=postgres"
-dotnet user-secrets set "Jwt:Key" "una-clave-larga-cualquiera"
-dotnet ef database update --project ../dao_library --startup-project .
-dotnet run
-```
-
-Queda en `http://localhost:5224` (Swagger en `/swagger`).
-
-## Probar el login
-
-No hay usuarios cargados de antemano. Primero se crea uno:
+1. Tener MySQL corriendo (es MySQL, no SQL Server). Con Docker:
 
 ```bash
-curl -X POST http://localhost:5224/User -H "Content-Type: application/json" \
-  -d '{"name":"Daniel","dni":"12345678","email":"daniel@email.com","password":"123456"}'
+docker run -d --name mysql-tp -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=api_gestion -p 3306:3306 mysql:8
 ```
 
-Y se loguea con esos mismos datos:
+2. Copiar la config y completar la conexión y `Jwt:Key`:
 
 ```bash
-curl -X POST http://localhost:5224/User/login -H "Content-Type: application/json" \
-  -d '{"email":"daniel@email.com","password":"123456"}'
+cp api_gestion/appsettings.example.json api_gestion/appsettings.json
 ```
 
-Responde `{ "token": "..." }`, o `401` si la contraseña está mal.
+3. Crear las tablas y levantar:
 
-Frontend: [api_gestion-frontend](https://github.com/mateopavoniTSDS/api_gestion-frontend).
+```bash
+dotnet ef database update --project dao_library --startup-project api_gestion
+dotnet run --project api_gestion
+```
+
+Queda en `http://localhost:5224`.
+
+## Migraciones
+
+```bash
+dotnet ef migrations add NombreMigracion --project dao_library --startup-project api_gestion
+dotnet ef database update --project dao_library --startup-project api_gestion
+```
+
+Al hacer pull, el resto solo corre `database update`.
