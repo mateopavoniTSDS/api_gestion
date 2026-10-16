@@ -3,21 +3,28 @@ using entity_library;
 
 public class PlayerDAO
 {
+    private readonly AppDbContext context;
+
+    public PlayerDAO(AppDbContext context)
+    {
+        this.context = context;
+    }
+
     public Player CreatePlayer(Player player)
     {
-        player.Id = MockDatabase.Players.Count + 1;
-        MockDatabase.Players.Add(player);
+        context.Players.Add(player);
+        context.SaveChanges();
         return player;
     }
 
     public Player? GetPlayerById(long id)
     {
-        return MockDatabase.Players.FirstOrDefault(p => p.Id == id);
+        return context.Players.FirstOrDefault(p => p.Id == id);
     }
 
     public List<Player> GetAllPlayers()
     {
-        return MockDatabase.Players;
+        return context.Players.ToList();
     }
 
     public bool UpdatePlayer(Player player)
@@ -32,6 +39,7 @@ public class PlayerDAO
         existing.Dni = player.Dni;
         existing.Numero = player.Numero;
         existing.TeamId = player.TeamId;
+        context.SaveChanges();
         return true;
     }
 
@@ -43,7 +51,8 @@ public class PlayerDAO
             return false;
         }
 
-        MockDatabase.Players.Remove(existing);
+        context.Players.Remove(existing);
+        context.SaveChanges();
         return true;
     }
 }

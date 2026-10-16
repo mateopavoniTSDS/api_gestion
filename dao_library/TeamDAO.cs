@@ -3,21 +3,28 @@ using entity_library;
 
 public class TeamDAO
 {
+    private readonly AppDbContext context;
+
+    public TeamDAO(AppDbContext context)
+    {
+        this.context = context;
+    }
+
     public Team CreateTeam(Team team)
     {
-        team.Id = MockDatabase.Teams.Count + 1;
-        MockDatabase.Teams.Add(team);
+        context.Teams.Add(team);
+        context.SaveChanges();
         return team;
     }
 
     public Team? GetTeamById(long id)
     {
-        return MockDatabase.Teams.FirstOrDefault(t => t.Id == id);
+        return context.Teams.FirstOrDefault(t => t.Id == id);
     }
 
     public List<Team> GetAllTeams()
     {
-        return MockDatabase.Teams;
+        return context.Teams.ToList();
     }
 
     public bool UpdateTeam(Team team)
@@ -30,6 +37,8 @@ public class TeamDAO
 
         existing.Name = team.Name;
         existing.Category = team.Category;
+        existing.TrainerId = team.TrainerId;
+        context.SaveChanges();
         return true;
     }
 
@@ -41,7 +50,8 @@ public class TeamDAO
             return false;
         }
 
-        MockDatabase.Teams.Remove(existing);
+        context.Teams.Remove(existing);
+        context.SaveChanges();
         return true;
     }
 }

@@ -3,21 +3,28 @@ using entity_library;
 
 public class StudentDAO
 {
+    private readonly AppDbContext context;
+
+    public StudentDAO(AppDbContext context)
+    {
+        this.context = context;
+    }
+
     public Student CreateStudent(Student student)
     {
-        student.Id = MockDatabase.Students.Count + 1;
-        MockDatabase.Students.Add(student);
+        context.Students.Add(student);
+        context.SaveChanges();
         return student;
     }
 
     public Student? GetStudentById(long id)
     {
-        return MockDatabase.Students.FirstOrDefault(s => s.Id == id);
+        return context.Students.FirstOrDefault(s => s.Id == id);
     }
 
     public List<Student> GetAllStudents()
     {
-        return MockDatabase.Students;
+        return context.Students.ToList();
     }
 
     public bool UpdateStudent(Student student)
@@ -32,6 +39,7 @@ public class StudentDAO
         existing.Dni = student.Dni;
         existing.File = student.File;
         existing.CourseId = student.CourseId;
+        context.SaveChanges();
         return true;
     }
 
@@ -43,7 +51,8 @@ public class StudentDAO
             return false;
         }
 
-        MockDatabase.Students.Remove(existing);
+        context.Students.Remove(existing);
+        context.SaveChanges();
         return true;
     }
 }

@@ -14,9 +14,4 @@
       <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     </ItemGroup>
 
-    <!-- Old Postgres migrations reference Npgsql; excluded until regenerated for MySQL -->
-    <ItemGroup>
-      <Compile Remove="Migrations\**" />
-    </ItemGroup>
-
 </Project>

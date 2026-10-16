@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace entity_library;
 
-public class Person
+public abstract class Person
 {
     private long id = 0;
     private string name = "";

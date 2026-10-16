@@ -3,21 +3,28 @@ using entity_library;
 
 public class CourseDAO
 {
+    private readonly AppDbContext context;
+
+    public CourseDAO(AppDbContext context)
+    {
+        this.context = context;
+    }
+
     public Course CreateCourse(Course course)
     {
-        course.Id = MockDatabase.Courses.Count + 1;
-        MockDatabase.Courses.Add(course);
+        context.Courses.Add(course);
+        context.SaveChanges();
         return course;
     }
 
     public Course? GetCourseById(long id)
     {
-        return MockDatabase.Courses.FirstOrDefault(c => c.Id == id);
+        return context.Courses.FirstOrDefault(c => c.Id == id);
     }
 
     public List<Course> GetAllCourses()
     {
-        return MockDatabase.Courses;
+        return context.Courses.ToList();
     }
 
     public bool UpdateCourse(Course course)
@@ -29,6 +36,7 @@ public class CourseDAO
         }
 
         existing.Name = course.Name;
+        context.SaveChanges();
         return true;
     }
 
@@ -40,7 +48,8 @@ public class CourseDAO
             return false;
         }
 
-        MockDatabase.Courses.Remove(existing);
+        context.Courses.Remove(existing);
+        context.SaveChanges();
         return true;
     }
 }

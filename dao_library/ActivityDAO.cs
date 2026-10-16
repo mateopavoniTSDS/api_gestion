@@ -3,21 +3,28 @@ using entity_library;
 
 public class ActivityDAO
 {
+    private readonly AppDbContext context;
+
+    public ActivityDAO(AppDbContext context)
+    {
+        this.context = context;
+    }
+
     public Activity CreateActivity(Activity activity)
     {
-        activity.Id = MockDatabase.Activities.Count + 1;
-        MockDatabase.Activities.Add(activity);
+        context.Activities.Add(activity);
+        context.SaveChanges();
         return activity;
     }
 
     public Activity? GetActivityById(long id)
     {
-        return MockDatabase.Activities.FirstOrDefault(a => a.Id == id);
+        return context.Activities.FirstOrDefault(a => a.Id == id);
     }
 
     public List<Activity> GetAllActivities()
     {
-        return MockDatabase.Activities;
+        return context.Activities.ToList();
     }
 
     public bool UpdateActivity(Activity activity)
@@ -33,6 +40,7 @@ public class ActivityDAO
         existing.Date = activity.Date;
         existing.Type = activity.Type;
         existing.CourseId = activity.CourseId;
+        context.SaveChanges();
         return true;
     }
 
@@ -44,7 +52,8 @@ public class ActivityDAO
             return false;
         }
 
-        MockDatabase.Activities.Remove(existing);
+        context.Activities.Remove(existing);
+        context.SaveChanges();
         return true;
     }
 }

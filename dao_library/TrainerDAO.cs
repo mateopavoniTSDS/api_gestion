@@ -3,21 +3,28 @@ using entity_library;
 
 public class TrainerDAO
 {
+    private readonly AppDbContext context;
+
+    public TrainerDAO(AppDbContext context)
+    {
+        this.context = context;
+    }
+
     public Trainer CreateTrainer(Trainer trainer)
     {
-        trainer.Id = MockDatabase.Trainers.Count + 1;
-        MockDatabase.Trainers.Add(trainer);
+        context.Trainers.Add(trainer);
+        context.SaveChanges();
         return trainer;
     }
 
     public Trainer? GetTrainerById(long id)
     {
-        return MockDatabase.Trainers.FirstOrDefault(t => t.Id == id);
+        return context.Trainers.FirstOrDefault(t => t.Id == id);
     }
 
     public List<Trainer> GetAllTrainers()
     {
-        return MockDatabase.Trainers;
+        return context.Trainers.ToList();
     }
 
     public bool UpdateTrainer(Trainer trainer)
@@ -30,6 +37,7 @@ public class TrainerDAO
 
         existing.Name = trainer.Name;
         existing.Dni = trainer.Dni;
+        context.SaveChanges();
         return true;
     }
 
@@ -41,7 +49,8 @@ public class TrainerDAO
             return false;
         }
 
-        MockDatabase.Trainers.Remove(existing);
+        context.Trainers.Remove(existing);
+        context.SaveChanges();
         return true;
     }
 }
