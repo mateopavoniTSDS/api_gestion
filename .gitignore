@@ -2,3 +2,4 @@ bin/
 obj/
 .idea/
 frontend/
+api_gestion/appsettings.json

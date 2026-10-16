@@ -12,8 +12,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader()));
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(option =>
+    option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddScoped<TrainerDAO>();
 builder.Services.AddScoped<TeamDAO>();
