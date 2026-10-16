@@ -37,6 +37,7 @@ public class PlayerDAO
 
         existing.Name = player.Name;
         existing.Dni = player.Dni;
+        existing.Age = player.Age;
         existing.Numero = player.Numero;
         existing.TeamId = player.TeamId;
         context.SaveChanges();

@@ -82,6 +82,9 @@ namespace dao_library.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
                     b.Property<string>("Dni")
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
@@ -111,6 +114,9 @@ namespace dao_library.Migrations
                         .HasColumnType("bigint");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
 
                     b.Property<long>("CourseId")
                         .HasColumnType("bigint");
@@ -172,6 +178,9 @@ namespace dao_library.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
                     b.Property<string>("Dni")
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
@@ -193,6 +202,9 @@ namespace dao_library.Migrations
                         .HasColumnType("bigint");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
 
                     b.Property<string>("Dni")
                         .HasMaxLength(20)

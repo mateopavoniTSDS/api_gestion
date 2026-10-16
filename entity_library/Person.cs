@@ -7,6 +7,7 @@ public abstract class Person
     private long id = 0;
     private string name = "";
     private string? dni;
+    private int age = 0;
 
     public long Id
     {
@@ -27,5 +28,12 @@ public abstract class Person
     {
         get { return dni; }
         set { dni = value; }
+    }
+
+    [Range(1, 120)]
+    public int Age
+    {
+        get { return age; }
+        set { age = value; }
     }
 }

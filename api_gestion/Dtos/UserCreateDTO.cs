@@ -13,6 +13,9 @@ public class UserCreateDTO
     [StringLength(20, MinimumLength = 6)]
     public string Dni { get; set; } = "";
 
+    [Range(1, 120)]
+    public int Age { get; set; }
+
     [Required]
     [EmailAddress]
     public string Email { get; set; } = "";

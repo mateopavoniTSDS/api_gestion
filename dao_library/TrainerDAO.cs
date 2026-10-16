@@ -37,6 +37,7 @@ public class TrainerDAO
 
         existing.Name = trainer.Name;
         existing.Dni = trainer.Dni;
+        existing.Age = trainer.Age;
         context.SaveChanges();
         return true;
     }

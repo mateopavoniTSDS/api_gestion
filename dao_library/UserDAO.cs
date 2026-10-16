@@ -37,6 +37,7 @@ public class UserDAO
 
         existing.Name = user.Name;
         existing.Dni = user.Dni;
+        existing.Age = user.Age;
         existing.Email = user.Email;
         existing.Password = user.Password;
         existing.RoleType = user.RoleType;

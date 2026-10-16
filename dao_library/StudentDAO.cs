@@ -37,6 +37,7 @@ public class StudentDAO
 
         existing.Name = student.Name;
         existing.Dni = student.Dni;
+        existing.Age = student.Age;
         existing.File = student.File;
         existing.CourseId = student.CourseId;
         context.SaveChanges();

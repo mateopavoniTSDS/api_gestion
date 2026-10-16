@@ -58,6 +58,7 @@ public class UserController : ControllerBase
         {
             Name = dto.Name,
             Dni = dto.Dni,
+            Age = dto.Age,
             Email = dto.Email,
             Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             RoleType = dto.RoleType
@@ -85,6 +86,7 @@ public class UserController : ControllerBase
             Id = id,
             Name = dto.Name,
             Dni = dto.Dni,
+            Age = dto.Age,
             Email = dto.Email,
             Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             RoleType = dto.RoleType
@@ -132,6 +134,7 @@ public class UserController : ControllerBase
             Id = user.Id,
             Name = user.Name,
             Dni = user.Dni,
+            Age = user.Age,
             Email = user.Email,
             RoleType = user.RoleType
         };
