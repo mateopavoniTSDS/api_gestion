@@ -16,13 +16,22 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddDbContext<AppDbContext>(option =>
     option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+// DataSource elige la familia de acceso a datos: EF (default) o Mock
+if (builder.Configuration["DataSource"] == "Mock")
+{
+    builder.Services.AddSingleton<IDAOFactory, MockDAOFactory>();
+}
+else
+{
+    builder.Services.AddScoped<IDAOFactory, EFDAOFactory>();
+}
+
 builder.Services.AddScoped<TrainerDAO>();
 builder.Services.AddScoped<TeamDAO>();
 builder.Services.AddScoped<PlayerDAO>();
 builder.Services.AddScoped<CourseDAO>();
 builder.Services.AddScoped<StudentDAO>();
 builder.Services.AddScoped<ActivityDAO>();
-builder.Services.AddScoped<UserDAO>();
 builder.Services.AddScoped<JwtService>();
 
 var jwtConfig = builder.Configuration.GetSection("Jwt");

@@ -11,13 +11,13 @@ using api_gestion.Services;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    private readonly UserDAO _userDAO;
+    private readonly IDAOUser _userDAO;
     private readonly JwtService _jwtService;
 
-    public UserController(ILogger<UserController> logger, UserDAO userDAO, JwtService jwtService)
+    public UserController(ILogger<UserController> logger, IDAOFactory factory, JwtService jwtService)
     {
         _logger = logger;
-        _userDAO = userDAO;
+        _userDAO = factory.CreateUserDAO();
         _jwtService = jwtService;
     }
 
