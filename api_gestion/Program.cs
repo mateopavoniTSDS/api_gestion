@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddCors(options =>
-    options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader()));
+    options.AddPolicy("PermitirFrontend", policy => policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader()));
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(option =>
@@ -54,7 +54,7 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = "swagger"; 
     });
 }
-app.UseCors();
+app.UseCors("PermitirFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
